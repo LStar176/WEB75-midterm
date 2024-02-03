@@ -1,16 +1,21 @@
-import express from 'express';
-import { loginUser, signupUser } from '../controller/user.controller.js';
+import express from "express";
+import { loginUser, signupUser,getData, getDataById , deleteDataById , updateDataById } from "../controller/user.controller.js";
+import { authentication, author } from "../middleware/auth.middle.js";
 
 const router = express.Router();
 
 //login route
-router 
-        .route('/login')
-        .post(loginUser)
+router.route("/login").post(loginUser);
 
-//sigun up route
-router 
-        .route('/signup')
-        .post(signupUser)
+/* sigun up route
+ * signup => login => other routes   - no token after signup
+ */
+router.route("/signup").post(signupUser);
 
-export {router as userRouter}
+router.get('/',author,getData)
+
+router.get('/:id',authentication,getDataById)
+router.get('/:id',authentication,deleteDataById)
+router.get('/:id',authentication,updateDataById)
+
+export { router as userRouter };

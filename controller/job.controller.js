@@ -1,58 +1,21 @@
-import userModel from "../model/user.model.js";
-import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
+import jobModel from "../model/job.model.js";
 
-//login user
-const loginUser = async (req, res) => {
-  const { username, password } = req.body;
-  try {
-    const user = await userModel.login(username, password);
-
-    //  create token
-    const token = jwt.sign(newUser, process.env.SECRET_TOKEN, {
-      expiresIn: "5m",
-    });
-    const refreshToken = jwt.sign(newUser, process.env.SECRET_REFRESH_TOKEN, {
-      expiresIn: "1d",
-    });
-    req.user = user;
-    res.status(200).send({ user, token, refreshToken });
-  } catch (error) {
-    res
-      .status(error.status || 500)
-      .send(error.message || "Internal server error");
-  }
-};
-
-//signup user
-const signupUser = async (req, res) => {
-  const { username, password } = req.body;
-  try {
-    const newUser = await userModel.signup(username, password);
-
-    res.status(200).send({ newUser });
-  } catch (error) {
-    res
-      .status(error.status || 500)
-      .send(error.message || "Internal server error");
-  }
-};
-
-// Crud
 const getData = async (req, res) => {
-    try {
-      const getData = await jobModel.find({}).sort({});
-      if (!getData)
-        throw {
-          status: 400,
-          message: "No data found",
-        };
-      res.status(200).send(getData);
-    } catch (error) {
-      res
-        .status(error.status || 500)
-        .send({ error: error.message } || { error: error.message });
-    }
-  };
+  try {
+    const getData = await jobModel.find({}).sort({});
+    if (!getData)
+      throw {
+        status: 400,
+        message: "No data found",
+      };
+    res.status(200).send(getData);
+  } catch (error) {
+    res
+      .status(error.status || 500)
+      .send({ error: error.message } || { error: error.message });
+  }
+};
 
 const getDataById = async (req, res) => {
   try {
@@ -73,6 +36,23 @@ const getDataById = async (req, res) => {
     res
       .status(error.status || 500)
       .send({ error: error.message } || { error: error.message });
+  }
+};
+
+const postData = async (req, res) => {
+  try {
+    const { title, content } = req.body;
+    let emptyField = [];
+    if (!title) emptyField.push("title");
+    if (!content) emptyField.push("content");
+    if (emptyField.length > 0) {
+      return res.status(400).send({ error: "error roi kia", emptyField });
+    }
+
+    const newRoute = await jobModel.create({ title, content });
+    res.status(200).send(newRoute);
+  } catch (error) {
+    res.status(500).send(error.message);
   }
 };
 
@@ -118,4 +98,5 @@ const updateDataById = async (req, res) => {
     };
   res.status(200).send(updataData);
 };
-export { signupUser, loginUser ,getData, getDataById , deleteDataById , updateDataById};
+
+export { getData, getDataById, postData, deleteDataById, updateDataById };

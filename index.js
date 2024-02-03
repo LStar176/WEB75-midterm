@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { serverRouter } from "./routes/routes.js";
+import { routerFacroty } from "./routes/routes.js";
 
 const app = express();
 
@@ -14,4 +14,4 @@ mongoose.connect(process.env.MONGO_URI).then(() =>
   })
 );
 
-serverRouter(app);
+routerFacroty(app);

@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 
 const bonusSchema = mongoose.Schema({
-  hhobbies: [String],
+  hobbies: [String],
   targets: [String],
   user: {
-    type: mongoose.Types.OnjectId,
+    type: mongoose.Types.ObjectId,
     ref: "user",
   },
 });
 
-const bonusModel = mongoose.model("info", bonusSchema);
+const bonusModel = mongoose.model("bonusinfo", bonusSchema);
 export default bonusModel;

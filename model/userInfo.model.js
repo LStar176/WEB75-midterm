@@ -5,9 +5,19 @@ const usersInfoSchema = mongoose.Schema({
   birthday: String,
   hometown: String,
   country: String,
-  study: String,
+  study: [
+    {
+      school: String,
+      major: String,
+      timeStart: Date,
+      timeEnd: {
+        type: Date,
+        default: null,
+      },
+    },
+  ],
   user: {
-    type: mongoose.Types.OnjectId,
+    type: mongoose.Types.ObjectId,
     ref: "user",
   },
 });
