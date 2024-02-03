@@ -12,5 +12,5 @@ const usersInfoSchema = mongoose.Schema({
   },
 });
 
-const usersInfoModel = mongooses.model("info", usersInfoSchema);
+const usersInfoModel = mongoose.model("info", usersInfoSchema);
 export default usersInfoModel;
