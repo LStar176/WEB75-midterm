@@ -1,3 +1,5 @@
+import { authentication } from "../middleware/auth.middle.js";
+
 import { bonusRouter } from "./bonus.route.js";
 import { jobRouter } from "./job.route.js";
 import { userRouter } from "./user.route.js";
@@ -26,6 +28,6 @@ const routes = [
 
 export const routerFacroty = (server) => {
   routes.map((route) => {
-    server.use(route.path, /* middlewares , */ route.router);
+    server.use(route.path, authentication, route.router);
   });
 };

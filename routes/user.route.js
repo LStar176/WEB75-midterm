@@ -21,8 +21,8 @@ router.route("/signup").post(signupUser);
 
 router.get("/", author, getData);
 
-router.get("/:id", authentication, getDataById);
-router.get("/:id", authentication, deleteDataById);
-router.get("/:id", authentication, updateDataById);
+router.get("/:id", authentication, author, getDataById);
+router.get("/:id", authentication, author, deleteDataById);
+router.get("/:id", authentication, author, updateDataById);
 
 export { router as userRouter };
