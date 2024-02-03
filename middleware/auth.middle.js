@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import userModel from "../model/user.model.js";
 
 export const authentication = async (req, res, next) => {
   const headerToken = req.headers["Authentication"];
@@ -34,5 +35,7 @@ export const authentication = async (req, res, next) => {
 };
 
 export const author = (req, res, next) => {
+  const user = req.user;
+  if (!user.role.includes("admin")) throw new Error("Cannot access");
   next();
 };
