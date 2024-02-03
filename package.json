@@ -1,0 +1,23 @@
+{
+  "name": "web75-midterm",
+  "version": "1.0.0",
+  "description": "Thực hiện thiết kế cơ sở dữ liệu để đáp ứng những thông tin sau:\r -Thông tin cá nhân bao gồm: Họ và tên, ngày tháng năm sinh, nơi sinh, quốc tịch, quá trình học vấn.\r -Thông tin làm việc bao gồm: các kỹ năng cá nhân, các dự án cá nhân (tên dự án, nội dung, vai trò và thời gian hoàn thành ngày bắt đầu và kết thúc), quá trình làm việc (thời gian bắt đầu kết thúc nếu -vẫn đang làm thì để null, tên công ty, vai trò).\r -Thông tin thêm bao gồm: các sở thích, các mục tiêu cá nhân.\r -Bảng user: lưu trữ tài khoản mật khẩu người dùng và id hồ sơ sở hữu.",
+  "main": "index.js",
+  "type": "module",
+  "module": "true",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "DuyNgo",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.1.1",
+    "nodemon": "^3.0.3",
+    "validator": "^13.11.0"
+  }
+}
