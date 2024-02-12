@@ -7,27 +7,28 @@ import { userInfoRouter } from "./userInfo.route.js";
 
 
 
-const routes = [
-  {
-    path: "/user",
-    router: userRouter,
-  },
-  {
-    path: "/userinfo",
-    router: userInfoRouter,
-  },
-  {
-    path: "/job",
-    router: jobRouter,
-  },
-  {
-    path: "/moreinfo",
-    router: bonusRouter,
-  },
+const routes = [{
+        path: "/user",
+        router: userRouter,
+    },
+    {
+        path: "/userinfo",
+        router: userInfoRouter,
+    },
+    {
+        path: "/job",
+        router: jobRouter,
+    },
+    {
+        path: "/moreinfo",
+        router: bonusRouter,
+    },
 ];
 
+
+// wrong spelling of factory 
 export const routerFacroty = (server) => {
-  routes.map((route) => {
-    server.use(route.path, authentication, route.router);
-  });
+    routes.map((route) => {
+        server.use(route.path, authentication, route.router);
+    });
 };

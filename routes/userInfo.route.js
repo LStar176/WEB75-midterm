@@ -1,10 +1,10 @@
 import express from "express";
 import {
-  getData,
-  getDataById,
-  postData,
-  deleteDataById,
-  updateDataById,
+    getData,
+    getDataById,
+    postData,
+    deleteDataById,
+    updateDataById,
 } from "../controller/userInfo.controller.js";
 
 const router = express.Router();
@@ -12,9 +12,9 @@ const router = express.Router();
 router.route("/").get(getData).post(postData);
 
 router
-  .route("/:id")
-  .get(getDataById)
-  .put(updateDataById)
-  .delete(deleteDataById);
+    .route("/:id")
+    .get(getDataById)
+    .put(updateDataById)
+    .delete(deleteDataById);
 
 export { router as userInfoRouter };
