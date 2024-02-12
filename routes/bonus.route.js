@@ -1,4 +1,5 @@
 import express from "express";
+import { authentication, author } from "../middleware/auth.middle.js";
 import {
   getData,
   getDataById,
@@ -9,10 +10,13 @@ import {
 
 const router = express.Router();
 
-router.route("/").get(getData).post(postData);
+router.get("/", authentication, getData);
+
+router.post("/", authentication, author, postData); // Authorization to post data
 
 router
   .route("/:id")
+  .all(authentication, author)
   .get(getDataById)
   .put(updateDataById)
   .delete(deleteDataById);

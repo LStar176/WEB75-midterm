@@ -3,7 +3,7 @@ import bonusModel from "../model/bonus.model.js";
 
 const getData = async (req, res) => {
   try {
-    const getData = await bonusModel.find({}).sort({ });
+    const getData = await bonusModel.find({});
     if (!getData)
       throw {
         status: 400,
@@ -41,15 +41,9 @@ const getDataById = async (req, res) => {
 
 const postData = async (req, res) => {
   try {
-    const { title, content } = req.body;
-    let emptyField = [];
-    if (!title) emptyField.push("title");
-    if (!content) emptyField.push("content");
-    if (emptyField.length > 0) {
-      return res.status(400).send({ error: "error roi kia", emptyField });
-    }
+    const { hobbies, targets } = req.body;
 
-    const newdata = await bonusModel.create({ title, content });
+    const newdata = await bonusModel.create({ hobbies, targets });
     res.status(200).send(newdata);
   } catch (error) {
     res.status(500).send(error.message);
@@ -63,11 +57,10 @@ const deleteDataById = async (req, res) => {
         status: 400,
         message: "ID is invalid",
       };
-   
+
     const deleteData = await bonusModel.findOneAndDelete({
       _id: req.params.id,
     });
-
 
     if (!deleteData)
       throw {
@@ -88,9 +81,10 @@ const updateDataById = async (req, res) => {
       status: 400,
       message: "Invalid ID",
     };
+  const { hobbies, targets } = req.body;
   const updataData = await bonusModel.findOneAndUpdate(
     { _id: req.params.id },
-    req.body
+    { hobbies, targets }
   );
   if (!updataData)
     throw {

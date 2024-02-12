@@ -3,7 +3,7 @@ import jobModel from "../model/job.model.js";
 
 const getData = async (req, res) => {
   try {
-    const getData = await jobModel.find({}).sort({});
+    const getData = await jobModel.find({});
     if (!getData)
       throw {
         status: 400,
@@ -41,15 +41,9 @@ const getDataById = async (req, res) => {
 
 const postData = async (req, res) => {
   try {
-    const { title, content } = req.body;
-    let emptyField = [];
-    if (!title) emptyField.push("title");
-    if (!content) emptyField.push("content");
-    if (emptyField.length > 0) {
-      return res.status(400).send({ error: "error roi kia", emptyField });
-    }
+    const { skill, project, jobHistory } = req.body;
 
-    const newRoute = await jobModel.create({ title, content });
+    const newRoute = await jobModel.create({ skill, project, jobHistory });
     res.status(200).send(newRoute);
   } catch (error) {
     res.status(500).send(error.message);
@@ -87,9 +81,10 @@ const updateDataById = async (req, res) => {
       status: 400,
       message: "Invalid ID",
     };
+  const { skill, project, jobHistory } = req.body;
   const updataData = await jobModel.findOneAndUpdate(
     { _id: req.params.id },
-    req.body
+    { skill, project, jobHistory }
   );
   if (!updataData)
     throw {

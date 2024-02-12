@@ -3,7 +3,7 @@ import usersInfoModel from "../model/userInfo.model.js";
 
 const getData = async (req, res) => {
   try {
-    const getData = await usersInfoModel.find({}).sort({});
+    const getData = await usersInfoModel.find({});
     if (!getData)
       throw {
         status: 400,
@@ -41,18 +41,17 @@ const getDataById = async (req, res) => {
 
 const postData = async (req, res) => {
   try {
-    const { title, content } = req.body;
-    let emptyField = [];
-    if (!title) emptyField.push("title");
-    if (!content) emptyField.push("content");
-    if (emptyField.length > 0) {
-      return res.status(400).send({ error: "error roi kia", emptyField });
-    }
-
-    const newRoute = await usersInfoModel.create({ title, content });
+    const { name, birthday, hometown, country, study } = req.body;
+    const newRoute = await usersInfoModel.create({
+      name,
+      birthday,
+      hometown,
+      country,
+      study,
+    });
     res.status(200).send(newRoute);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).send(error);
   }
 };
 
@@ -86,9 +85,10 @@ const updateDataById = async (req, res) => {
       status: 400,
       message: "Invalid ID",
     };
+  const { name, birthday, hometown, country, study } = req.body;
   const updataData = await usersInfoModel.findOneAndUpdate(
     { _id: req.params.id },
-    req.body
+    { name, birthday, hometown, country, study }
   );
   if (!updataData)
     throw {

@@ -5,8 +5,6 @@ import { jobRouter } from "./job.route.js";
 import { userRouter } from "./user.route.js";
 import { userInfoRouter } from "./userInfo.route.js";
 
-
-
 const routes = [
   {
     path: "/user",
@@ -28,6 +26,6 @@ const routes = [
 
 export const routerFacroty = (server) => {
   routes.map((route) => {
-    server.use(route.path, authentication, route.router);
+      server.use(route.path, route.router);
   });
 };

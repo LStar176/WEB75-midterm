@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  role: [String],
+  // role: [String],
 });
 
 /* STATIC LOGIN METHOD
@@ -39,8 +39,7 @@ userSchema.statics.login = async function (username, password) {
       status: 400,
       message: "Incorrect Password",
     };
-
-  return user;
+  return user.toObject(); 
 };
 
 /* STATIC SIGNUP METHOD
@@ -72,7 +71,6 @@ userSchema.statics.signup = async function (username, password) {
   const newUser = await this.create({
     username,
     password: hash,
-    role: ["client"],
   });
 
   return newUser;

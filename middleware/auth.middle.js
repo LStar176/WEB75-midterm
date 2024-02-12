@@ -2,40 +2,46 @@ import jwt from "jsonwebtoken";
 import userModel from "../model/user.model.js";
 
 export const authentication = async (req, res, next) => {
-  const headerToken = req.headers["Authentication"];
-  const token =
-    headerToken.split(" ")[0] === "Bearer"
-      ? headerToken.split(" ")[1]
-      : headerToken.split(" ")[0];
+  try {
+    const headerToken = req.headers["authorization"];
+    // Validation token
+    if (!headerToken)
+      throw {
+        status: 401,
+        message: "You need to login to access!",
+      };
+    // verify tokens
+    const token =
+      headerToken.split(" ")[0] === "Bearer"
+        ? headerToken.split(" ")[1]
+        : headerToken.split(" ")[0];
+    const decoded = jwt.verify(token, process.env.SECRET_TOKEN);
 
-  const headerRefreshToken = req.headers["Authentication-refreshToken"];
-  const refreshToken =
-    headerToken.split(" ")[0] === "Bearer"
-      ? headerToken.split(" ")[1]
-      : headerRefreshToken.split(" ")[0];
-
-  const authenToken = jwt.verify(token, process.env.SECRET_TOKEN);
-  const authenRefreshToken = jwt.verify(
-    refreshToken,
-    process.env.SECRET_REFRESH_TOKEN
-  );
-  if (!authenToken && !authenRefreshToken)
-    throw new Error("All Tokens Expires. Login again!");
-  if (!authenToken && authenRefreshToken) {
-    const token = jwt.sign(req.user, process.env.SECRET_TOKEN, {
-      expiresIn: "5m",
-    });
-    const refreshToken = jwt.sign(req.user, process.env.SECRET_REFRESH_TOKEN, {
-      expiresIn: "1d",
-    });
-    const authen = { token, refreshToken };
-    req.user = authen;
+    // Add payload to req.user
+    req.user = await userModel.findOne({ _id: decoded.id }).select("-password"); // save user to req.user for authorization
+    next();
+  } catch (error) {
+    console.error("Error in authentication middleware:", error);
+    res
+      .status(error.status || 500)
+      .send(error.message || "Internal server error");
   }
-  next();
 };
 
 export const author = (req, res, next) => {
-  const user = req.user;
-  if (!user.role.includes("admin")) throw new Error("Cannot access");
-  next();
+  try {
+    const username = req.headers["username"];
+    const user = req.user;
+    console.log(user);
+    if (username !== user.username)
+      throw {
+        status: 403,
+        message: "You are not allowed to access this page",
+      };
+    next();
+  } catch (error) {
+    res
+      .status(error.status || 500)
+      .send(error.message || "Internal server error");
+  }
 };

@@ -6,16 +6,13 @@ const loginUser = async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await userModel.login(username, password);
+    // console.log(user);
 
     //  create token
-    const token = jwt.sign(newUser, process.env.SECRET_TOKEN, {
-      expiresIn: "5m",
+    const token = jwt.sign({ id: user._id }, process.env.SECRET_TOKEN, {
+      expiresIn: "15m",
     });
-    const refreshToken = jwt.sign(newUser, process.env.SECRET_REFRESH_TOKEN, {
-      expiresIn: "1d",
-    });
-    req.user = user;
-    res.status(200).send({ user, token, refreshToken });
+    res.status(200).send({ id: user._id, username: user.username, token });
   } catch (error) {
     res
       .status(error.status || 500)
@@ -38,22 +35,6 @@ const signupUser = async (req, res) => {
 };
 
 // Crud
-const getData = async (req, res) => {
-    try {
-      const getData = await jobModel.find({}).sort({});
-      if (!getData)
-        throw {
-          status: 400,
-          message: "No data found",
-        };
-      res.status(200).send(getData);
-    } catch (error) {
-      res
-        .status(error.status || 500)
-        .send({ error: error.message } || { error: error.message });
-    }
-  };
-
 const getDataById = async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id))
@@ -107,9 +88,10 @@ const updateDataById = async (req, res) => {
       status: 400,
       message: "Invalid ID",
     };
+  const { username, password } = req.body;
   const updataData = await jobModel.findOneAndUpdate(
     { _id: req.params.id },
-    req.body
+    { username, password }
   );
   if (!updataData)
     throw {
@@ -118,4 +100,4 @@ const updateDataById = async (req, res) => {
     };
   res.status(200).send(updataData);
 };
-export { signupUser, loginUser ,getData, getDataById , deleteDataById , updateDataById};
+export { signupUser, loginUser, getDataById, deleteDataById, updateDataById };
