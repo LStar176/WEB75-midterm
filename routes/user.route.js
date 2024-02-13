@@ -1,10 +1,10 @@
 import express from "express";
 import {
-  loginUser,
-  signupUser,
-  getDataById,
-  deleteDataById,
-  updateDataById,
+    loginUser,
+    signupUser,
+    getDataById,
+    deleteDataById,
+    updateDataById,
 } from "../controller/user.controller.js";
 import { authentication, author } from "../middleware/auth.middle.js";
 
@@ -18,6 +18,7 @@ router.route("/login").post(loginUser);
  */
 router.route("/signup").post(signupUser);
 
+// /profile /me -> token -> user -> res
 router.get("/:id", authentication, author, getDataById);
 router.get("/:id", authentication, author, deleteDataById);
 router.get("/:id", authentication, author, updateDataById);
